@@ -1,0 +1,69 @@
+define host{
+	use	linux-server
+	host_name	client1            
+	alias		client1            
+        contacts	evolvecybersupport
+	address		172.16.0.23
+        check_period                    24x7
+        check_interval                  5
+        retry_interval                  1
+        max_check_attempts              10
+        notification_period             24x7
+        notification_interval           10
+        contact_groups                  evolvecybersupport
+        }
+#define	hostgroup{
+#	hostgroup_name	Example.com
+#	alias		ID
+#	members		client_add
+#
+#}
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       client1
+        service_description             PING
+        check_command                   check_ping!100.0,20%!500.0,60%
+        }
+
+define service{
+            use                             local-service
+            host_name                       client1
+            service_description             SWAP Usage
+            check_command                   check_nrpe!check_swap
+
+}
+define service{
+            use                             local-service
+            host_name                       client1
+            service_description             Root / Partition
+            check_command                   check_nrpe!check_root
+}
+
+define service{
+            use                             local-service
+            host_name                       client1
+            service_description             Current Users
+            check_command                   check_nrpe!check_users
+
+}
+
+define service{
+            use                             local-service
+            host_name                       client1
+            service_description             Total Processes
+            check_command                   check_nrpe!check_total_procs
+}
+
+define service{
+            use                             local-service
+            host_name                       client1
+            service_description             Current Load
+            check_command                   check_nrpe!check_load
+}
+
+define service {
+	use				   local-service
+	host_name			   client1
+	service_description		   SSH
+	check_command			   check_nrpe!check_ssh
+}
